@@ -71,6 +71,17 @@ namespace SMPServer
         private void buttonShowMessages_Click(object sender, EventArgs e)
         {
             textBoxMessages.Clear();
+            // Checking which priority button was selected
+            string selectedPriority = "";
+            if(radioButtonPriorityLow.Checked){
+                selectedPriority = "1";
+            }else if(radioButtonPriorityMedium.Checked){
+                selectedPriority = "2";
+            }else if(radioButtonPriorityHigh.Checked){
+                selectedPriority = "3";
+            }else if(radioAll.Checked){
+                selectedPriority = "ALL";
+            }
 
             StreamReader reader = new StreamReader("Messages.txt");
 
@@ -83,13 +94,17 @@ namespace SMPServer
                 string message = reader.ReadLine();
                 string emptyLine = reader.ReadLine();
 
-                string record = "Version: " + version + Environment.NewLine;
-                record += "Priority: " + priority + Environment.NewLine;
-                record += "Date/Time: " + dateTime + Environment.NewLine;
-                record += "Message: " + message + Environment.NewLine;
+                // Determine if the message should be shown based on selected priority
+                bool show =(selectedPriority == "ALL" || priority == selectedPriority);
 
-                textBoxMessages.AppendText(record + Environment.NewLine);
+                if(show){
+                    string record = "Version: " + version + Environment.NewLine;
+                    record += "Priority: " + priority + Environment.NewLine;
+                    record += "Date/Time: " + dateTime + Environment.NewLine;
+                    record += "Message: " + message + Environment.NewLine;
 
+                    textBoxMessages.AppendText(record + Environment.NewLine);
+                }
                 version = reader.ReadLine();
             }
 
