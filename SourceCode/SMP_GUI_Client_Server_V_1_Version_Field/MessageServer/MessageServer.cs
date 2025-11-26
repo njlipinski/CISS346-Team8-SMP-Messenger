@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Collections.Generic;
 
 namespace SMPServer
 {
@@ -125,17 +126,57 @@ namespace SMPServer
 
             try
             {
+                // List to store all the messages read from the file
+                List<SmpPacket> allMessages = new List<SmpPacket>();
+
                 StreamReader reader = new StreamReader("Messages.txt");
                 
                 string smpVersion = reader.ReadLine();
-                priority = reader.ReadLine();
-                string dateTime = reader.ReadLine();
-                string message = reader.ReadLine();
 
+                // Read every message in the file and store it in the list
+                while(smpVersion != null){
+                    string msgPriority = reader.ReadLine();
+                    string dateTime = reader.ReadLine();
+                    string message = reader.ReadLine();
+                    // Read the empty line that seperates each message
+                    string emptyLine = reader.ReadLine();
+
+                    SmpPacket packet = new SmpPacket(smpVersion,Enumerations.SmpMessageType.PutMessage.ToString(),msgPriority,dateTime,message);
+
+                    allMessages.Add(packet);
+
+                    smpVersion = reader.ReadLine();
+                }
                 reader.Close();
 
-                smpPacket = new SmpPacket(smpVersion, Enumerations.SmpMessageType.GetMessage.ToString(),
-                    dateTime, priority, message);
+                // Search for first message that matches the requested priority
+                SmpPacket found = null;
+                for(int i = 0; i < allMessages.Count; i++){
+                    if(allMessages[i].Priority == priority){
+                        found = allMessages[i];
+                        break;
+                    }
+                }
+
+                // If no message with that requested priority exists let the user know
+                if(found == null){
+                    return new SmpPacket("1.0",Enumerations.SmpMessageType.GetMessage.ToString(),priority,"N/A","NO MESSAGES HAVE THAT PRIORITY");
+                }
+                smpPacket = found;
+                // Remove the found message from the list
+                allMessages.Remove(found);
+
+                StreamWriter writer = new StreamWriter("Messages.txt", false);
+
+                // Rewrite the Messages.txt file without the consumed message
+                for(int i = 0; i < allMessages.Count; i++){
+                    writer.WriteLine(allMessages[i].Version);
+                    writer.WriteLine(allMessages[i].Priority);
+                    writer.WriteLine(allMessages[i].DateTime);
+                    writer.WriteLine(allMessages[i].Message);
+                    writer.WriteLine();
+                }
+                writer.Close();
             }
             catch (Exception ex)
             {
