@@ -56,7 +56,7 @@
             this.groupBox1.Controls.Add(this.textBoxServerIPAddress);
             this.groupBox1.Location = new System.Drawing.Point(12, 31);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(673, 85);
+            this.groupBox1.Size = new System.Drawing.Size(673, 115);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Settings";
@@ -96,6 +96,45 @@
             this.textBoxServerIPAddress.TabIndex = 0;
             this.textBoxServerIPAddress.Text = "127.0.0.1";
             this.textBoxServerIPAddress.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 2.0 GUI implementation
+            // 
+            // labelUserID
+            // 
+            this.labelUserID = new System.Windows.Forms.Label();
+            this.labelUserID.AutoSize = true;
+            this.labelUserID.Location = new System.Drawing.Point(17, 77);
+            this.labelUserID.Name = "labelUserID";
+            this.labelUserID.Size = new System.Drawing.Size(68, 20);
+            this.labelUserID.TabIndex = 7;
+            this.labelUserID.Text = "User ID";
+            // 
+            // textBoxUserID
+            // 
+            this.textBoxUserID = new System.Windows.Forms.TextBox();
+            this.textBoxUserID.Location = new System.Drawing.Point(160, 74);
+            this.textBoxUserID.Name = "textBoxUserID";
+            this.textBoxUserID.Size = new System.Drawing.Size(162, 26);
+            this.textBoxUserID.TabIndex = 8;
+            // 
+            // labelPassword
+            // 
+            this.labelPassword = new System.Windows.Forms.Label();
+            this.labelPassword.AutoSize = true;
+            this.labelPassword.Location = new System.Drawing.Point(341, 77);
+            this.labelPassword.Name = "labelPassword";
+            this.labelPassword.Size = new System.Drawing.Size(82, 20);
+            this.labelPassword.TabIndex = 9;
+            this.labelPassword.Text = "Password";
+            // 
+            // textBoxPassword
+            // 
+            this.textBoxPassword = new System.Windows.Forms.TextBox();
+            this.textBoxPassword.Location = new System.Drawing.Point(425, 74);   
+            this.textBoxPassword.Name = "textBoxPassword";
+            this.textBoxPassword.PasswordChar = '*';
+            this.textBoxPassword.Size = new System.Drawing.Size(211, 26);
+            this.textBoxPassword.TabIndex = 10;
+            // End of 2.0 GUI implementation
             // 
             // groupBox2
             // 
@@ -103,7 +142,7 @@
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.textBoxMessageContent);
             this.groupBox2.Controls.Add(this.groupBox3);
-            this.groupBox2.Location = new System.Drawing.Point(13, 136);
+            this.groupBox2.Location = new System.Drawing.Point(13, 155);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(672, 323);
             this.groupBox2.TabIndex = 1;
@@ -184,7 +223,7 @@
             // 
             // textBoxServerResponse
             // 
-            this.textBoxServerResponse.Location = new System.Drawing.Point(201, 477);
+            this.textBoxServerResponse.Location = new System.Drawing.Point(201, 490);
             this.textBoxServerResponse.Multiline = true;
             this.textBoxServerResponse.Name = "textBoxServerResponse";
             this.textBoxServerResponse.Size = new System.Drawing.Size(464, 38);
@@ -193,7 +232,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 480);
+            this.label4.Location = new System.Drawing.Point(12, 500);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(132, 20);
             this.label4.TabIndex = 6;
@@ -203,7 +242,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(715, 550);
+            this.ClientSize = new System.Drawing.Size(715, 575);
+            // start of 2.0 controls implementation
+            this.groupBox1.Controls.Add(this.textBoxPassword);
+            this.groupBox1.Controls.Add(this.labelPassword);
+            this.groupBox1.Controls.Add(this.textBoxUserID);
+            this.groupBox1.Controls.Add(this.labelUserID);
+            // end of 2.0 controls implementation
             this.Controls.Add(this.label4);
             this.Controls.Add(this.textBoxServerResponse);
             this.Controls.Add(this.groupBox2);
@@ -241,6 +286,11 @@
         private System.Windows.Forms.RadioButton radioButtonPriorityLow;
         private System.Windows.Forms.TextBox textBoxServerResponse;
         private System.Windows.Forms.Label label4;
+        // 2.0 implementation
+        private System.Windows.Forms.TextBox textBoxUserID;
+        private System.Windows.Forms.TextBox textBoxPassword;
+        private System.Windows.Forms.Label labelUserID;
+        private System.Windows.Forms.Label labelPassword;
     }
 }
 

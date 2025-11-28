@@ -68,7 +68,7 @@
             this.groupBox1.Controls.Add(this.groupBox3);
             this.groupBox1.Controls.Add(this.textBoxMessages);
             this.groupBox1.Controls.Add(this.buttonShowMessages);
-            this.groupBox1.Location = new System.Drawing.Point(12, 246);
+            this.groupBox1.Location = new System.Drawing.Point(12, 286);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(574, 341);
             this.groupBox1.TabIndex = 8;
@@ -151,7 +151,7 @@
             // 
             // textBoxMessageType
             // 
-            this.textBoxMessageType.Location = new System.Drawing.Point(142, 39);
+            this.textBoxMessageType.Location = new System.Drawing.Point(142, 79);
             this.textBoxMessageType.Multiline = true;
             this.textBoxMessageType.Name = "textBoxMessageType";
             this.textBoxMessageType.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
@@ -216,15 +216,53 @@
             this.groupBox4.Controls.Add(this.textBoxMessageType);
             this.groupBox4.Location = new System.Drawing.Point(12, 144);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(574, 96);
+            this.groupBox4.Size = new System.Drawing.Size(574, 126);
             this.groupBox4.TabIndex = 12;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Last Received Message";
+            // 2.0 GUI implementation
+            // 
+            // labelUserID
+            // 
+            this.labelLastUserID = new System.Windows.Forms.Label();
+            this.labelLastUserID.AutoSize = true;
+            this.labelLastUserID.Location = new System.Drawing.Point(14, 42);
+            this.labelLastUserID.Name = "labelLastUserID";
+            this.labelLastUserID.Size = new System.Drawing.Size(112, 20);
+            this.labelLastUserID.TabIndex = 20;
+            this.labelLastUserID.Text = "User ID";
+            // 
+            // textBoxUserID
+            // 
+            this.textBoxLastUserID = new System.Windows.Forms.TextBox();
+            this.textBoxLastUserID.Location = new System.Drawing.Point(142, 39);
+            this.textBoxLastUserID.Name = "textBoxLastUserID";
+            this.textBoxLastUserID.Size = new System.Drawing.Size(126, 30);
+            this.textBoxLastUserID.TabIndex = 21;
+            // 
+            // labelPassword
+            // 
+            this.labelLastPassword = new System.Windows.Forms.Label();
+            this.labelLastPassword.AutoSize = true;
+            this.labelLastPassword.Location = new System.Drawing.Point(274, 42);
+            this.labelLastPassword.Name = "labelLastPassword";
+            this.labelLastPassword.Size = new System.Drawing.Size(125, 20);
+            this.labelLastPassword.TabIndex = 22;
+            this.labelLastPassword.Text = "Password";
+            // 
+            // textBoxPassword
+            // 
+            this.textBoxLastPassword = new System.Windows.Forms.TextBox();
+            this.textBoxLastPassword.Location = new System.Drawing.Point(419, 39);
+            this.textBoxLastPassword.Name = "textBoxLastPassword";
+            this.textBoxLastPassword.Size = new System.Drawing.Size(132, 30);
+            this.textBoxLastPassword.TabIndex = 23;
+            // End of 2.0 GUI implementation
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(274, 42);
+            this.label4.Location = new System.Drawing.Point(274, 87);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(125, 20);
             this.label4.TabIndex = 12;
@@ -232,7 +270,7 @@
             // 
             // textBoxMessagePriority
             // 
-            this.textBoxMessagePriority.Location = new System.Drawing.Point(419, 39);
+            this.textBoxMessagePriority.Location = new System.Drawing.Point(419, 79);
             this.textBoxMessagePriority.Multiline = true;
             this.textBoxMessagePriority.Name = "textBoxMessagePriority";
             this.textBoxMessagePriority.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
@@ -243,7 +281,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(14, 42);
+            this.label3.Location = new System.Drawing.Point(14, 87);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(112, 20);
             this.label3.TabIndex = 10;
@@ -253,7 +291,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(610, 606);
+            this.ClientSize = new System.Drawing.Size(610, 666);
+            // start of 2.0 controls implementation
+            this.groupBox4.Controls.Add(this.labelLastUserID);
+            this.groupBox4.Controls.Add(this.textBoxLastUserID);
+            this.groupBox4.Controls.Add(this.labelLastPassword);
+            this.groupBox4.Controls.Add(this.textBoxLastPassword);
+            // end of 2.0 controls implementation
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -295,6 +339,10 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBoxMessagePriority;
+        private System.Windows.Forms.Label labelLastUserID;
+        private System.Windows.Forms.TextBox textBoxLastUserID;
+        private System.Windows.Forms.Label labelLastPassword;
+        private System.Windows.Forms.TextBox textBoxLastPassword;
     }
 }
 

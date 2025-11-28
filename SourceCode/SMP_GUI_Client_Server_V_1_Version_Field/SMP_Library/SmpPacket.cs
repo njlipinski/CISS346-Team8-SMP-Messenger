@@ -10,13 +10,19 @@ namespace SMP_Library
         public string DateTime;
         public string Message;
 
-        public SmpPacket(string version, string messageType, string priority, string dateTime, string message)
+        // Added these for our 2.0 implementation
+        public string UserID;
+        public string Password;
+
+        public SmpPacket(string version, string messageType, string priority, string dateTime, string message, string userID, string password)
         {
             Version = version;
             MessageType = messageType;
             Priority = priority;
             DateTime = dateTime;
             Message = message;
+            userID = userID;
+            password = password;
         }
 
         public override string ToString()
@@ -26,6 +32,8 @@ namespace SMP_Library
             packet += Priority + Environment.NewLine;
             packet += DateTime + Environment.NewLine;
             packet += Message + Environment.NewLine;
+            packet += UserID + Environment.NewLine;
+            packet += Password + Environment.NewLine;
 
             return packet;
         }

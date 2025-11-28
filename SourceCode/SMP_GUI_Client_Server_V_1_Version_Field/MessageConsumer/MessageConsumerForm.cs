@@ -31,9 +31,12 @@ namespace SMPClientConsumer
                 priority = 3;
             }
 
+            // User authentication for 2.0 implementation
+            string userID = textBoxUserID.Text;
+            string password = textBoxPassword.Text;
             //Build the SMP packet
             SmpPacket smpPacket = new SmpPacket(Enumerations.SmpVersion.Version_1_0.ToString(),
-                Enumerations.SmpMessageType.GetMessage.ToString(), priority.ToString(), null, null);
+                Enumerations.SmpMessageType.GetMessage.ToString(), priority.ToString(), null, null, userID, password);
 
             //Send the packet
             MessageConsumer.SendSmpPacket(textBoxServerIPAddress.Text, 

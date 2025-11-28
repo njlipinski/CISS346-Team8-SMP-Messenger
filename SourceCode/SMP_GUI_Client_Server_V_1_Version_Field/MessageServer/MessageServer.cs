@@ -51,7 +51,11 @@ namespace SMPServer
                     string dateTime = networkStreamReader.ReadLine();
                     string message = networkStreamReader.ReadLine();
 
-                    SmpPacket smpPacket = new SmpPacket(version, messageType, priority, dateTime, message);
+                    // User ID and password for 2.0 implementation
+                    string userID = networkStreamReader.ReadLine();
+                    string password = networkStreamReader.ReadLine();
+
+                    SmpPacket smpPacket = new SmpPacket(version, messageType, priority, dateTime, message, userID, password);
 
                     ProcessSmpPutPacket(smpPacket);
 
@@ -68,6 +72,10 @@ namespace SMPServer
                 else if (messageType == Enumerations.SmpMessageType.GetMessage.ToString())
                 {
                     string priority = networkStreamReader.ReadLine();
+
+                    // User ID and password for 2.0 implementation
+                    string userID = networkStreamReader.ReadLine();
+                    string password = networkStreamReader.ReadLine();
 
                     SmpPacket smpPacket = ProcessSmpGetPacket(priority);
 
@@ -105,6 +113,9 @@ namespace SMPServer
                     record += smpPacket.Priority + Environment.NewLine;
                     record += smpPacket.DateTime + Environment.NewLine;
                     record += smpPacket.Message + Environment.NewLine;
+                    // 2.0 Add UserID and Password to the record
+                    record += smpPacket.UserID + Environment.NewLine;
+                    record += smpPacket.Password + Environment.NewLine;
 
                     StreamWriter writer = new StreamWriter("Messages.txt", true);
 
@@ -138,10 +149,13 @@ namespace SMPServer
                     string msgPriority = reader.ReadLine();
                     string dateTime = reader.ReadLine();
                     string message = reader.ReadLine();
+                    // 2.0 read UserID and Password
+                    string userID = reader.ReadLine();
+                    string password = reader.ReadLine();
                     // Read the empty line that seperates each message
                     string emptyLine = reader.ReadLine();
 
-                    SmpPacket packet = new SmpPacket(smpVersion,Enumerations.SmpMessageType.PutMessage.ToString(),msgPriority,dateTime,message);
+                    SmpPacket packet = new SmpPacket(smpVersion,Enumerations.SmpMessageType.PutMessage.ToString(),msgPriority,dateTime,message,userID,password);
 
                     allMessages.Add(packet);
 
@@ -160,7 +174,7 @@ namespace SMPServer
 
                 // If no message with that requested priority exists let the user know
                 if(found == null){
-                    return new SmpPacket("1.0",Enumerations.SmpMessageType.GetMessage.ToString(),priority,"N/A","NO MESSAGES HAVE THAT PRIORITY");
+                    return new SmpPacket("1.0",Enumerations.SmpMessageType.GetMessage.ToString(),priority,"N/A","NO MESSAGES HAVE THAT PRIORITY", "N/A", "N/A");
                 }
                 smpPacket = found;
                 // Remove the found message from the list
@@ -174,6 +188,9 @@ namespace SMPServer
                     writer.WriteLine(allMessages[i].Priority);
                     writer.WriteLine(allMessages[i].DateTime);
                     writer.WriteLine(allMessages[i].Message);
+                    // 2.0  write UserID and Password
+                    writer.WriteLine(allMessages[i].UserID);
+                    writer.WriteLine(allMessages[i].Password);
                     writer.WriteLine();
                 }
                 writer.Close();
