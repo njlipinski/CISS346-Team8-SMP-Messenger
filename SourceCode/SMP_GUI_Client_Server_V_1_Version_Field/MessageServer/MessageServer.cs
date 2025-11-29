@@ -17,6 +17,9 @@ namespace SMPServer
 
             if (form != null)
             {
+                // Clear Messages.txt when server starts
+                File.WriteAllText("Messages.txt", string.Empty);
+
                 IPAddress iPAddress = IPAddress.Parse(form.IpAddress);
                 int port = form.Port;
 
@@ -54,7 +57,7 @@ namespace SMPServer
                     string dateTime = networkStreamReader.ReadLine();
                     string message = networkStreamReader.ReadLine();
 
-                    SmpPacket smpPacket = new SmpPacket(version,userID, password, messageType, priority, dateTime, message);
+                    SmpPacket smpPacket = new SmpPacket(version, userID, password, messageType, priority, dateTime, message);
 
                     ProcessSmpPutPacket(smpPacket);
 
@@ -80,8 +83,14 @@ namespace SMPServer
                         return;
                     }
                     // Message exists but belongs to a different user
-                    if(smpPacket.UserID != userID || smpPacket.Password != password){
+                    if(smpPacket.UserID != userID){
                         SendSmpResponsePacket("NO MESSAGE WITH THAT PRIORITY EXISTS FOR THIS USER", networkStream);
+                        return;
+                    }
+                    // Message exists but user enters wrong password
+                    if (smpPacket.Password != password)
+                    {
+                        SendSmpResponsePacket("INCORRECT PASSWORD", networkStream);
                         return;
                     }
 
