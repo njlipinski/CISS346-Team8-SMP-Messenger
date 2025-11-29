@@ -14,26 +14,26 @@ namespace SMP_Library
         public string UserID;
         public string Password;
 
-        public SmpPacket(string version, string messageType, string priority, string dateTime, string message, string userID, string password)
+        public SmpPacket(string version, string userID, string password, string messageType, string priority, string dateTime, string message)
         {
             Version = version;
+            UserID = userID;
+            Password = password;
             MessageType = messageType;
             Priority = priority;
             DateTime = dateTime;
             Message = message;
-            userID = userID;
-            password = password;
         }
 
         public override string ToString()
         {
             string packet = Version + Environment.NewLine;
+            packet += UserID + Environment.NewLine;
+            packet += Password + Environment.NewLine;
             packet += MessageType + Environment.NewLine;
             packet += Priority + Environment.NewLine;
             packet += DateTime + Environment.NewLine;
             packet += Message + Environment.NewLine;
-            packet += UserID + Environment.NewLine;
-            packet += Password + Environment.NewLine;
 
             return packet;
         }

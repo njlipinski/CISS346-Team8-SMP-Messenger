@@ -89,16 +89,22 @@ namespace SMPServer
 
             while (version != null)
             {
+                // userID and password for 2.0
+                string userID = reader.ReadLine();
+                string password = reader.ReadLine();
                 string priority = reader.ReadLine();
                 string dateTime = reader.ReadLine();
                 string message = reader.ReadLine();
                 string emptyLine = reader.ReadLine();
+
 
                 // Determine if the message should be shown based on selected priority
                 bool show =(selectedPriority == "ALL" || priority == selectedPriority);
 
                 if(show){
                     string record = "Version: " + version + Environment.NewLine;
+                    record += "User ID: " + userID + Environment.NewLine;
+                    record += "Password: " + password + Environment.NewLine;
                     record += "Priority: " + priority + Environment.NewLine;
                     record += "Date/Time: " + dateTime + Environment.NewLine;
                     record += "Message: " + message + Environment.NewLine;
