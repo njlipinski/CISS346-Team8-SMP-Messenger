@@ -1,0 +1,6 @@
+*.vsidx
+*.json
+*.dll
+*.pdb
+*.exe
+*.cache
