@@ -59,6 +59,7 @@ namespace SMPServer
             StreamReader networkStreamReader = new StreamReader(networkStream);
 
             string version = networkStreamReader.ReadLine();
+            string privateKeyFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "private.key");
 
             if (version == "getKey")
             {
@@ -163,8 +164,11 @@ namespace SMPServer
                     }
                     writer.Close();
 
+                    // decrypt message for consumer
+                    string decryptedMessage = CryptographyUtilities.Encryption.DecryptMessage(smpPacket.Message, privateKeyFile);
+
                     string record = smpPacket.DateTime + Environment.NewLine;
-                    record += smpPacket.Message + Environment.NewLine;
+                    record += decryptedMessage + Environment.NewLine;
 
                     string responsePacket = "Message Information: " + Environment.NewLine + record;
 

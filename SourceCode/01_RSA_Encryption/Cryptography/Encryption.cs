@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -32,11 +33,15 @@ namespace CryptographyUtilities
         {
             byte[] encryptedMessageBytes = Convert.FromBase64String(encryptedMessage);
 
+            Debug.WriteLine("Encrypted Message:");
+            Debug.WriteLine(encryptedMessage);
+
             //Get the RSA public key parameters
             RSAParameters rsaParams = GetRsaParameters(privateKeyFile);
 
             //Allocate a RSACryptoServiceProvider and import the private key parameters
-            RSACryptoServiceProvider cryptoService = new RSACryptoServiceProvider();
+            RSACryptoServiceProvider cryptoService = new RSACryptoServiceProvider(rsaParams.Modulus.Length * 8);
+            cryptoService.PersistKeyInCsp = false;
             cryptoService.ImportParameters(rsaParams);
 
             //Encrypt and Decrypt bool Parameter: TRUE: OAEP Padding FALSE: PKCS#1.5 Padding
@@ -44,6 +49,9 @@ namespace CryptographyUtilities
 
             //Convert bytes to string
             string decryptedMessage = Encoding.Unicode.GetString(decryptedMessageBytes);
+
+            Debug.WriteLine("Decrypted Message:");
+            Debug.WriteLine(decryptedMessage);
 
             return decryptedMessage;
         }
