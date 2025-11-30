@@ -20,6 +20,15 @@ namespace SMPServer
                 // Clear Messages.txt when server starts
                 File.WriteAllText("Messages.txt", string.Empty);
 
+                // Generate RSA key pair if they don't exist
+                string publicKeyFile = "public.key";
+                string privateKeyFile = "private.key";
+
+                if (!File.Exists(publicKeyFile) || !File.Exists(privateKeyFile))
+                {
+                    CryptographyUtilities.Encryption.GeneratePublicPrivateKeyPair(publicKeyFile, privateKeyFile);
+                }
+
                 IPAddress iPAddress = IPAddress.Parse(form.IpAddress);
                 int port = form.Port;
 

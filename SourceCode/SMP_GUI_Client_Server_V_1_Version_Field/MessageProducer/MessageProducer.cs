@@ -17,7 +17,15 @@ namespace SMPClientProducer
 
             //Send the SMP packet
             StreamWriter writer = new StreamWriter(networkStream);
-            writer.WriteLine(smpPacket);
+            writer.WriteLine(smpPacket.Version);
+            writer.WriteLine(smpPacket.UserID);
+            writer.WriteLine(smpPacket.Password);
+            writer.WriteLine(smpPacket.MessageType);
+            writer.WriteLine(smpPacket.Priority);
+            writer.WriteLine(smpPacket.DateTime);
+            string publicKeyFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "public.key");
+            string encryptedMessage = CryptographyUtilities.Encryption.EncryptMessage(smpPacket.Message, publicKeyFile);
+            writer.WriteLine(encryptedMessage);
             writer.Flush();
 
             //Receive SMP Response from server

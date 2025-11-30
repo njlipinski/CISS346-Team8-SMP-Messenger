@@ -1,5 +1,6 @@
 ﻿using SMP_Library;
 using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace SMPClientProducer
@@ -9,6 +10,14 @@ namespace SMPClientProducer
         public MessageProducerForm()
         {
             InitializeComponent();
+
+            string publicKeyFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "public.key");
+            string privateKeyFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "private.key");
+
+            if (!File.Exists(publicKeyFile) || !File.Exists(privateKeyFile))
+            {
+                CryptographyUtilities.Encryption.GeneratePublicPrivateKeyPair(publicKeyFile, privateKeyFile);
+            }
 
             MessageProducer.SMPResponsePacketRecieved += SMPClientProducer_SMPResponsePacketRecieved;
         }
