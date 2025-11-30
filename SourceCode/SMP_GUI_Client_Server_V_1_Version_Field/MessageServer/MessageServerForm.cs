@@ -110,9 +110,9 @@ namespace SMPServer
                     record += "Priority: " + priority + Environment.NewLine;
                     record += "Date/Time: " + dateTime + Environment.NewLine;
                     // decrypt message for viewing
-                    //string decryptedMessage = CryptographyUtilities.Encryption.DecryptMessage(message, privateKeyFile);
+                    string decryptedMessage = CryptographyUtilities.Encryption.DecryptMessage(message, privateKeyFile);
 
-                    record += "Message: " + message + Environment.NewLine;
+                    record += "Message: " + decryptedMessage + Environment.NewLine;
 
                     textBoxMessages.AppendText(record + Environment.NewLine);
                 }

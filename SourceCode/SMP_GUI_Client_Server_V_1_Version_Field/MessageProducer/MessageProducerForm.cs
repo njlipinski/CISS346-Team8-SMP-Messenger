@@ -52,10 +52,13 @@ namespace SMPClientProducer
             string serverAddress = textBoxServerIPAddress.Text;
             int port = int.Parse(textBoxApplicationPortNumber.Text);
             string publicKeyFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "public.key");
-            if (!File.Exists(publicKeyFile))
+            //Delete old key if it exists
+            if (File.Exists(publicKeyFile))
             {
-                requestPublicKey(serverAddress, port);
+                File.Delete(publicKeyFile);
             }
+            requestPublicKey(serverAddress, port);
+
             //Get the message priority
             int priority;
 
