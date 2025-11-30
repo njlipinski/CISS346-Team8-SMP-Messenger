@@ -14,6 +14,8 @@ namespace SMPClientProducer
         {
             TcpClient client = new TcpClient(serverIpAddress, port);
             NetworkStream networkStream = client.GetStream();
+            StreamReader reader = new StreamReader(networkStream);
+
 
             //Send the SMP packet
             StreamWriter writer = new StreamWriter(networkStream);
@@ -29,7 +31,6 @@ namespace SMPClientProducer
             writer.Flush();
 
             //Receive SMP Response from server
-            StreamReader reader = new StreamReader(networkStream);
             string responsePacket = reader.ReadLine();
 
             //Done with the server

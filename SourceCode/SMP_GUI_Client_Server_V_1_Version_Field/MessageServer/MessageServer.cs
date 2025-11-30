@@ -20,14 +20,21 @@ namespace SMPServer
                 // Clear Messages.txt when server starts
                 File.WriteAllText("Messages.txt", string.Empty);
 
-                // Generate RSA key pair if they don't exist
+                // Generate new RSA key pair
                 string publicKeyFile = "public.key";
                 string privateKeyFile = "private.key";
 
-                if (!File.Exists(publicKeyFile) || !File.Exists(privateKeyFile))
+                // Delete old keys if they exist
+                if (File.Exists(publicKeyFile))
                 {
-                    CryptographyUtilities.Encryption.GeneratePublicPrivateKeyPair(publicKeyFile, privateKeyFile);
+                    File.Delete(publicKeyFile);
                 }
+                if (File.Exists(privateKeyFile))
+                {
+                    File.Delete(privateKeyFile);
+                }
+
+                CryptographyUtilities.Encryption.GeneratePublicPrivateKeyPair(publicKeyFile, privateKeyFile);
 
                 IPAddress iPAddress = IPAddress.Parse(form.IpAddress);
                 int port = form.Port;
@@ -52,6 +59,17 @@ namespace SMPServer
             StreamReader networkStreamReader = new StreamReader(networkStream);
 
             string version = networkStreamReader.ReadLine();
+
+            if (version == "getKey")
+            {
+                string publicKeyContent = File.ReadAllText("public.key");
+                StreamWriter writer = new StreamWriter(networkStream);
+                writer.Write(publicKeyContent);
+                writer.Flush();
+                writer.Close();
+                networkStreamReader.Close();
+                return;
+            }
 
             if (version == Enumerations.SmpVersion.Version_2_0.ToString())
             {

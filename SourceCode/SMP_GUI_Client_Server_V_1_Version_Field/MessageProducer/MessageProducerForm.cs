@@ -1,6 +1,9 @@
 ﻿using SMP_Library;
 using System;
 using System.IO;
+using System.Net.Sockets;
+using System.Runtime.Remoting.Messaging;
+using System.Text;
 using System.Windows.Forms;
 
 namespace SMPClientProducer
@@ -11,22 +14,51 @@ namespace SMPClientProducer
         {
             InitializeComponent();
 
-            string publicKeyFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "public.key");
-            string privateKeyFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "private.key");
+        }
 
-            if (!File.Exists(publicKeyFile) || !File.Exists(privateKeyFile))
+        private void requestPublicKey(string serverIP, int port)
+        {
+            try
             {
-                CryptographyUtilities.Encryption.GeneratePublicPrivateKeyPair(publicKeyFile, privateKeyFile);
-            }
+                TcpClient client = new TcpClient(serverIP, port);
+                NetworkStream networkStream = client.GetStream();
 
-            MessageProducer.SMPResponsePacketRecieved += SMPClientProducer_SMPResponsePacketRecieved;
+                // Request the public key
+                StreamWriter writer = new StreamWriter(networkStream);
+                writer.WriteLine("getKey");
+                writer.Flush();
+
+                // Receive the public key
+                StreamReader reader = new StreamReader(networkStream);
+                string publicKeyContent = reader.ReadToEnd();
+
+                // Save it locally
+                string publicKeyFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "public.key");
+                File.WriteAllText(publicKeyFile, publicKeyContent);
+
+                reader.Close();
+                writer.Close();
+                client.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to get public key: " + ex.Message);
+            }
         }
 
         private void buttonSendMessage_Click(object sender, EventArgs e)
         {
+            //Ask for public key
+            string serverAddress = textBoxServerIPAddress.Text;
+            int port = int.Parse(textBoxApplicationPortNumber.Text);
+            string publicKeyFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "public.key");
+            if (!File.Exists(publicKeyFile))
+            {
+                requestPublicKey(serverAddress, port);
+            }
+            //Get the message priority
             int priority;
 
-            //Get the message priority
             if (radioButtonPriorityLow.Checked == true)
             {
                 priority = 1;
