@@ -4,9 +4,9 @@ using System.Net.Sockets;
 using System.Windows.Forms;
 using SMP_Library;
 
-namespace SMPClientProducer
+namespace SMPClientRegister
 {
-    internal class MessageProducer
+    internal class ClientRegisteration
     {
         public static event EventHandler<SMPResponsePacketEventArgs> SMPResponsePacketRecieved;
 
@@ -19,13 +19,10 @@ namespace SMPClientProducer
             //Send the SMP packet
             StreamWriter writer = new StreamWriter(networkStream);
             writer.WriteLine(smpPacket.Version);
-            // Modified for 3.0 implementation
             writer.WriteLine(smpPacket.UserID);
             writer.WriteLine(smpPacket.EncryptedPassword);
             writer.WriteLine(smpPacket.MessageType);
-            writer.WriteLine(smpPacket.Priority);
             writer.WriteLine(smpPacket.DateTime);
-            writer.WriteLine(smpPacket.Message);
             writer.Flush();
 
             //Receive SMP Response from server

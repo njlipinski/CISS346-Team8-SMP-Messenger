@@ -32,8 +32,10 @@ namespace SMPClientConsumer
             }
 
             // User authentication for 2.0 implementation
+            // TODO: Encrypt these before sending
             string userID = textBoxUserID.Text;
             string password = textBoxPassword.Text;
+
             //Build the SMP packet
             SmpPacket smpPacket = new SmpPacket(Enumerations.SmpVersion.Version_2_0.ToString(), userID, password,
                 Enumerations.SmpMessageType.GetMessage.ToString(), priority.ToString(), null, null);

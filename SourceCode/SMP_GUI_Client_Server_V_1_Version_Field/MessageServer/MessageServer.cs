@@ -20,6 +20,9 @@ namespace SMPServer
                 // Clear Messages.txt when server starts
                 File.WriteAllText("Messages.txt", string.Empty);
 
+                // Clear Users.txt when server starts
+                File.WriteAllText("Users.txt", string.Empty);
+
                 // Generate new RSA key pair
                 string publicKeyFile = "public.key";
                 string privateKeyFile = "private.key";
@@ -66,18 +69,23 @@ namespace SMPServer
                 string publicKeyContent = File.ReadAllText("public.key");
                 StreamWriter writer = new StreamWriter(networkStream);
                 writer.Write(publicKeyContent);
+
                 writer.Flush();
                 writer.Close();
+
                 networkStreamReader.Close();
                 return;
-            }
-
-            if (version == Enumerations.SmpVersion.Version_2_0.ToString())
+            } else if (version == Enumerations.SmpVersion.Version_2_0.ToString())
             {
                 // User ID and password for 2.0 implementation
-                string userID = networkStreamReader.ReadLine();
-                string password = networkStreamReader.ReadLine();
+                // Modified for 3.0 implementation
+                // TODO: Implement authentication
+                string encryptedUserID = networkStreamReader.ReadLine();
+                string encryptedPassword = networkStreamReader.ReadLine();
                 string messageType = networkStreamReader.ReadLine();
+                
+                string userID = CryptographyUtilities.Encryption.DecryptMessage(encryptedUserID, privateKeyFile);
+                string password = CryptographyUtilities.Encryption.DecryptMessage(encryptedPassword, privateKeyFile);
 
                 if (messageType == Enumerations.SmpMessageType.PutMessage.ToString())
                 {
@@ -116,7 +124,7 @@ namespace SMPServer
                         return;
                     }
                     // Message exists but user enters wrong password
-                    if (smpPacket.Password != password)
+                    if (smpPacket.EncryptedPassword != password)
                     {
                         SendSmpResponsePacket("INCORRECT PASSWORD", networkStream);
                         return;
@@ -137,7 +145,7 @@ namespace SMPServer
                         string emptyLine = reader.ReadLine();
 
                         // match all the fields to see if this is the message that we want consumed
-                        bool isSameMessage =(userID2 == smpPacket.UserID) &&(password2 == smpPacket.Password) &&(msgPriority == smpPacket.Priority) &&(dateTime == smpPacket.DateTime) &&(message == smpPacket.Message);
+                        bool isSameMessage =(userID2 == smpPacket.UserID) &&(password2 == smpPacket.EncryptedPassword) &&(msgPriority == smpPacket.Priority) &&(dateTime == smpPacket.DateTime) &&(message == smpPacket.Message);
 
                         // Keep everything except the message we want to consume
                         if(!isSameMessage){
@@ -156,7 +164,6 @@ namespace SMPServer
                     for(int i = 0; i < allMessages.Count; i++){
                         writer.WriteLine(allMessages[i].Version);
                         writer.WriteLine(allMessages[i].UserID);
-                        writer.WriteLine(allMessages[i].Password);
                         writer.WriteLine(allMessages[i].Priority);
                         writer.WriteLine(allMessages[i].DateTime);
                         writer.WriteLine(allMessages[i].Message);
@@ -179,6 +186,19 @@ namespace SMPServer
                     PacketEventArgs eventArgs = new PacketEventArgs(smpPacket);
 
                     if (PacketRecieved != null) PacketRecieved(null, eventArgs);
+                } 
+                else if (messageType == Enumerations.SmpMessageType.RegisterUser.ToString())
+                {
+                    string dateTime = networkStreamReader.ReadLine();
+                    SmpPacket smpPacket = new SmpPacket(version, userID, encryptedPassword, messageType, null, dateTime, null);
+                    ProcessSmpPutUser(smpPacket);
+
+                    string responsePacket = "User Registered: " + DateTime.Now + Environment.NewLine;
+                    SendSmpResponsePacket(responsePacket, networkStream);
+
+                    networkStreamReader.Close();
+                    
+                    PacketEventArgs eventArgs = new PacketEventArgs(smpPacket);
                 }
             }
             else
@@ -200,11 +220,9 @@ namespace SMPServer
                     string record = smpPacket.Version + Environment.NewLine;
                     // 2.0 Add UserID and Password to the record
                     record += smpPacket.UserID + Environment.NewLine;
-                    record += smpPacket.Password + Environment.NewLine;
                     record += smpPacket.Priority + Environment.NewLine;
                     record += smpPacket.DateTime + Environment.NewLine;
                     record += smpPacket.Message + Environment.NewLine;
-    
 
                     StreamWriter writer = new StreamWriter("Messages.txt", true);
 
@@ -219,7 +237,30 @@ namespace SMPServer
                 ExceptionLogger.LogExeption(ex);
             }
         }
+        private static void ProcessSmpPutUser(SmpPacket smpPacket)
+        {
+            try
+            {
+                if (smpPacket != null)
+                {
+                    // 3.0 Add UserID and Password to the users record
+                    string user = smpPacket.UserID + Environment.NewLine;
+                    user += smpPacket.EncryptedPassword + Environment.NewLine;
+                    user += smpPacket.DateTime + Environment.NewLine;
 
+                    StreamWriter writer = new StreamWriter("Users.txt", true);
+
+                    writer.WriteLine(user);
+                    writer.Flush();
+
+                    writer.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogExeption(ex);
+            }
+        }
         private static SmpPacket ProcessSmpGetPacket(string priority)
         {
             SmpPacket smpPacket = null;
