@@ -49,8 +49,8 @@ namespace SMPClientRegister
         private void buttonRegister_Click(object sender, EventArgs e)
         {
             //Ask for public key
-            string serverAddress = "127.0.0.1";
-            int port = 50400;
+            string serverAddress = textBoxServerIPAddress.Text;
+            int port = int.Parse(textBoxApplicationPortNumber.Text);
             string publicKeyFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "public.key");
             //Delete old key if it exists
             if (File.Exists(publicKeyFile))

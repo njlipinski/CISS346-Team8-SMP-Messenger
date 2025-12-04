@@ -199,6 +199,8 @@ namespace SMPServer
                     networkStreamReader.Close();
                     
                     PacketEventArgs eventArgs = new PacketEventArgs(smpPacket);
+                    
+                    if (PacketRecieved != null) PacketRecieved(null, eventArgs);
                 }
             }
             else
