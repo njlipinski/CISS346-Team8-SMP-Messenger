@@ -78,12 +78,9 @@ namespace SMPClientProducer
             string message = textBoxMessageContent.Text;
             string encryptedMessage = CryptographyUtilities.Encryption.EncryptMessage(message, publicKeyFile);
 
-            // User authentication for 2.0 implementation
-            string userID = textBoxUserID.Text;
-            string password = textBoxPassword.Text;
-
-            string encryptedUserID = CryptographyUtilities.Encryption.EncryptMessage(userID, publicKeyFile);
-            string encryptedPassword = CryptographyUtilities.Encryption.EncryptMessage(password, publicKeyFile);
+            // Encrypted userID and password for 3.0 implementation
+            string encryptedUserID = CryptographyUtilities.Encryption.EncryptMessage(textBoxUserID.Text, publicKeyFile);
+            string encryptedPassword = CryptographyUtilities.Encryption.EncryptMessage(textBoxPassword.Text, publicKeyFile);
 
             //Build the SMP packet
             SmpPacket smpPacket = new SmpPacket(Enumerations.SmpVersion.Version_2_0.ToString(), encryptedUserID, encryptedPassword,

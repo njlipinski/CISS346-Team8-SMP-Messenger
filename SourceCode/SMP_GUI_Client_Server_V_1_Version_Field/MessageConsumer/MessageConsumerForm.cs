@@ -1,5 +1,7 @@
 ﻿using SMP_Library;
 using System;
+using System.IO;
+using System.Net.Sockets;
 using System.Windows.Forms;
 
 namespace SMPClientConsumer
@@ -13,11 +15,52 @@ namespace SMPClientConsumer
             MessageConsumer.SMPResponsePacketRecieved += SMPClientConsumer_SMPResponsePacketRecieved;
         }
 
+        private void requestPublicKey(string serverIP, int port)
+        {
+            try
+            {
+                TcpClient client = new TcpClient(serverIP, port);
+                NetworkStream networkStream = client.GetStream();
+
+                // Request the public key
+                StreamWriter writer = new StreamWriter(networkStream);
+                writer.WriteLine("getKey");
+                writer.Flush();
+
+                // Receive the public key
+                StreamReader reader = new StreamReader(networkStream);
+                string publicKeyContent = reader.ReadToEnd();
+
+                // Save it locally
+                string publicKeyFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "public.key");
+                File.WriteAllText(publicKeyFile, publicKeyContent);
+
+                reader.Close();
+                writer.Close();
+                client.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to get public key: " + ex.Message);
+            }
+        }
+
         private void buttonGetMessage_Click(object sender, EventArgs e)
         {
-            int priority;
+            //Ask for public key
+            string serverAddress = textBoxServerIPAddress.Text;
+            int port = int.Parse(textBoxApplicationPortNumber.Text);
+            string publicKeyFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "public.key");
+            //Delete old key if it exists
+            if (File.Exists(publicKeyFile))
+            {
+                File.Delete(publicKeyFile);
+            }
+            requestPublicKey(serverAddress, port);
 
             //Get the message priority
+            int priority;
+
             if (radioButtonPriorityLow.Checked == true)
             {
                 priority = 1;
@@ -31,18 +74,16 @@ namespace SMPClientConsumer
                 priority = 3;
             }
 
-            // User authentication for 2.0 implementation
-            // TODO: Encrypt these before sending
-            string userID = textBoxUserID.Text;
-            string password = textBoxPassword.Text;
+            // Encrypted userID and password for 3.0 implementation
+            string encryptedUserID = CryptographyUtilities.Encryption.EncryptMessage(textBoxUserID.Text, publicKeyFile);
+            string encryptedPassword = CryptographyUtilities.Encryption.EncryptMessage(textBoxPassword.Text, publicKeyFile);
 
             //Build the SMP packet
-            SmpPacket smpPacket = new SmpPacket(Enumerations.SmpVersion.Version_2_0.ToString(), userID, password,
+            SmpPacket smpPacket = new SmpPacket(Enumerations.SmpVersion.Version_2_0.ToString(), encryptedUserID, encryptedPassword,
                 Enumerations.SmpMessageType.GetMessage.ToString(), priority.ToString(), null, null);
 
             //Send the packet
-            MessageConsumer.SendSmpPacket(textBoxServerIPAddress.Text, 
-                int.Parse(textBoxApplicationPortNumber.Text), smpPacket);
+            MessageConsumer.SendSmpPacket(serverAddress, port, smpPacket);
 
             MessageBox.Show("Message retrieved...", "Message Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
