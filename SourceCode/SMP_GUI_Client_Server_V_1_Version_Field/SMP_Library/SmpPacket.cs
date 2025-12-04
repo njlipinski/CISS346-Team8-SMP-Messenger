@@ -12,13 +12,14 @@ namespace SMP_Library
 
         // Added these for our 2.0 implementation
         public string UserID;
-        public string Password;
+        // Modified for 3.0 implementation
+        public string EncryptedPassword;
 
-        public SmpPacket(string version, string userID, string password, string messageType, string priority, string dateTime, string message)
+        public SmpPacket(string version, string userID, string encryptedPassword, string messageType, string priority, string dateTime, string message)
         {
             Version = version;
             UserID = userID;
-            Password = password;
+            EncryptedPassword = encryptedPassword;
             MessageType = messageType;
             Priority = priority;
             DateTime = dateTime;
@@ -29,7 +30,7 @@ namespace SMP_Library
         {
             string packet = Version + Environment.NewLine;
             packet += UserID + Environment.NewLine;
-            packet += Password + Environment.NewLine;
+            packet += EncryptedPassword + Environment.NewLine;
             packet += MessageType + Environment.NewLine;
             packet += Priority + Environment.NewLine;
             packet += DateTime + Environment.NewLine;

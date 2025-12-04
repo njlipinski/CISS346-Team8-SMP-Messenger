@@ -93,7 +93,7 @@ namespace SMPServer
                     string dateTime = networkStreamReader.ReadLine();
                     string message = networkStreamReader.ReadLine();
 
-                    SmpPacket smpPacket = new SmpPacket(version, userID, password, messageType, priority, dateTime, message);
+                    SmpPacket smpPacket = new SmpPacket(version, userID, encryptedPassword, messageType, priority, dateTime, message);
 
                     ProcessSmpPutPacket(smpPacket);
 
@@ -124,7 +124,8 @@ namespace SMPServer
                         return;
                     }
                     // Message exists but user enters wrong password
-                    if (smpPacket.EncryptedPassword != password)
+                    string decryptedPassword = CryptographyUtilities.Encryption.DecryptMessage(smpPacket.EncryptedPassword, privateKeyFile);
+                    if (decryptedPassword != password)
                     {
                         SendSmpResponsePacket("INCORRECT PASSWORD", networkStream);
                         return;
@@ -164,6 +165,7 @@ namespace SMPServer
                     for(int i = 0; i < allMessages.Count; i++){
                         writer.WriteLine(allMessages[i].Version);
                         writer.WriteLine(allMessages[i].UserID);
+                        writer.WriteLine(allMessages[i].EncryptedPassword);
                         writer.WriteLine(allMessages[i].Priority);
                         writer.WriteLine(allMessages[i].DateTime);
                         writer.WriteLine(allMessages[i].Message);
@@ -222,6 +224,7 @@ namespace SMPServer
                     string record = smpPacket.Version + Environment.NewLine;
                     // 2.0 Add UserID and Password to the record
                     record += smpPacket.UserID + Environment.NewLine;
+                    record += smpPacket.EncryptedPassword + Environment.NewLine;
                     record += smpPacket.Priority + Environment.NewLine;
                     record += smpPacket.DateTime + Environment.NewLine;
                     record += smpPacket.Message + Environment.NewLine;
