@@ -193,9 +193,13 @@ namespace SMPServer
                 {
                     string dateTime = networkStreamReader.ReadLine();
                     SmpPacket smpPacket = new SmpPacket(version, userID, encryptedPassword, messageType, null, dateTime, null);
-                    ProcessSmpPutUser(smpPacket);
+                    string responsePacket = "User Registered: " + userID + DateTime.Now + Environment.NewLine;
+                    
+                    if (ProcessSmpPutUser(smpPacket))
+                    {
+                        responsePacket = "User Already Exists: " + userID + DateTime.Now + Environment.NewLine;
+                    }
 
-                    string responsePacket = "User Registered: " + DateTime.Now + Environment.NewLine;
                     SendSmpResponsePacket(responsePacket, networkStream);
 
                     networkStreamReader.Close();
@@ -242,11 +246,13 @@ namespace SMPServer
                 ExceptionLogger.LogExeption(ex);
             }
         }
-        private static void ProcessSmpPutUser(SmpPacket smpPacket)
+        private static bool ProcessSmpPutUser(SmpPacket smpPacket)
         {
+            bool userExists = false;
             try
             {
-                if (smpPacket != null)
+                string currentUsers = ProcessSmpGetUsers();
+                if (smpPacket != null && !currentUsers.Contains(smpPacket.UserID))
                 {
                     // 3.0 Add UserID and Password to the users record
                     string user = smpPacket.UserID + Environment.NewLine;
@@ -259,12 +265,16 @@ namespace SMPServer
                     writer.Flush();
 
                     writer.Close();
+                } else
+                {
+                    userExists = true;
                 }
             }
             catch (Exception ex)
             {
                 ExceptionLogger.LogExeption(ex);
             }
+            return userExists;
         }
         private static SmpPacket ProcessSmpGetPacket(string priority)
         {
@@ -320,6 +330,56 @@ namespace SMPServer
 
             return smpPacket;
         }
+        private static string ProcessSmpGetUsers()
+        {
+            string userRecords = null;
+            try
+            {
+                StreamReader reader = new StreamReader("Users.txt");
+                string line = reader.ReadLine();
+                while(line != null)
+                {
+                    userRecords += line + Environment.NewLine;
+                    reader.ReadLine(); // skip password line
+                    reader.ReadLine(); // skip date line
+                    reader.ReadLine(); // skip empty line
+                    line = reader.ReadLine(); // read next user ID
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogExeption(ex);
+            }
+            return userRecords + Environment.NewLine;
+        }
+
+        private static string ProcessSmpGetUsersandPasswords()
+        {
+            string userRecords = null;
+            try
+            {
+                StreamReader reader = new StreamReader("Users.txt");
+                string privateKeyFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "private.key");
+                string line = reader.ReadLine();
+                while(line != null)
+                {
+                    userRecords += line + Environment.NewLine;
+                    string password = CryptographyUtilities.Encryption.DecryptMessage(reader.ReadLine(), privateKeyFile);
+                    userRecords += password + Environment.NewLine;
+                    reader.ReadLine(); // skip date line
+                    reader.ReadLine(); // skip empty line
+                    line = reader.ReadLine(); // read next user ID
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogExeption(ex);
+            }
+            return userRecords + Environment.NewLine;
+        }
+
         private static void SendSmpResponsePacket(String responsePacket, NetworkStream dataStream)
         {
             StreamWriter writer = new StreamWriter(dataStream);
