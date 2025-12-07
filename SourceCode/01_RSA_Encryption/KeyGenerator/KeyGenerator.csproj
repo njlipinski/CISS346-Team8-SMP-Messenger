@@ -80,6 +80,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\SMP_GUI_Client_Server_V_1_Version_Field\ClientRegistration\ClientRegistration.csproj">
+      <Project>{5c7f66b5-4653-4cd0-99c6-4ae9c4f8bdb0}</Project>
+      <Name>ClientRegistration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cryptography\CryptographyUtilities.csproj">
       <Project>{9B157F7F-77F5-4795-AF13-31776FB6769E}</Project>
       <Name>CryptographyUtilities</Name>

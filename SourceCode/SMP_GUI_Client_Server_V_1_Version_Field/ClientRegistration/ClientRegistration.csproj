@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AAFBEB37-9C57-4123-A20A-63E2CA54B698}</ProjectGuid>
+    <ProjectGuid>{5C7F66B5-4653-4CD0-99C6-4AE9C4F8BDB0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>SMPClientRegister</RootNamespace>
     <AssemblyName>SMPClientRegister</AssemblyName>
