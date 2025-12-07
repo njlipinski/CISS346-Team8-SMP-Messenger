@@ -71,9 +71,9 @@ namespace SMPClientRegister
                 Enumerations.SmpMessageType.RegisterUser.ToString(), null, DateTime.Now.ToString(), null);
 
             //Send the packet
-            ClientRegisteration.SendSmpPacket(serverAddress, port, smpPacket);
+            string responsePacket = ClientRegisteration.SendSmpPacket(serverAddress, port, smpPacket);
 
-            MessageBox.Show("User Registration sent...", "Registration Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Registration sent..." + Environment.NewLine + responsePacket, "Registration Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

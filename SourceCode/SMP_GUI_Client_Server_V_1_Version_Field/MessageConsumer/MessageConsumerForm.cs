@@ -84,7 +84,6 @@ namespace SMPClientConsumer
 
             //Send the packet
             MessageConsumer.SendSmpPacket(serverAddress, port, smpPacket);
-
             MessageBox.Show("Message retrieved...", "Message Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 

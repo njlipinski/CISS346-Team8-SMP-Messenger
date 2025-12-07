@@ -37,6 +37,7 @@
             this.radioButtonPriorityLow = new System.Windows.Forms.RadioButton();
             this.textBoxMessages = new System.Windows.Forms.TextBox();
             this.buttonShowMessages = new System.Windows.Forms.Button();
+            this.buttonShowUsers = new System.Windows.Forms.Button();
             this.textBoxMessageType = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -68,6 +69,7 @@
             this.groupBox1.Controls.Add(this.groupBox3);
             this.groupBox1.Controls.Add(this.textBoxMessages);
             this.groupBox1.Controls.Add(this.buttonShowMessages);
+            this.groupBox1.Controls.Add(this.buttonShowUsers);
             this.groupBox1.Location = new System.Drawing.Point(12, 286);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(574, 341);
@@ -141,13 +143,23 @@
             // 
             // buttonShowMessages
             // 
-            this.buttonShowMessages.Location = new System.Drawing.Point(270, 276);
+            this.buttonShowMessages.Location = new System.Drawing.Point(300, 276);
             this.buttonShowMessages.Name = "buttonShowMessages";
             this.buttonShowMessages.Size = new System.Drawing.Size(205, 47);
             this.buttonShowMessages.TabIndex = 5;
             this.buttonShowMessages.Text = "Show Messages";
             this.buttonShowMessages.UseVisualStyleBackColor = true;
             this.buttonShowMessages.Click += new System.EventHandler(this.buttonShowMessages_Click);
+            // 
+            // buttonShowUsers
+            // 
+            this.buttonShowUsers.Location = new System.Drawing.Point(60, 276);
+            this.buttonShowUsers.Name = "buttonShowUsers";
+            this.buttonShowUsers.Size = new System.Drawing.Size(205, 47);
+            this.buttonShowUsers.TabIndex = 5;
+            this.buttonShowUsers.Text = "Show Users";
+            this.buttonShowUsers.UseVisualStyleBackColor = true;
+            this.buttonShowUsers.Click += new System.EventHandler(this.buttonShowUsers_Click);
             // 
             // textBoxMessageType
             // 
@@ -329,6 +341,7 @@
         private System.Windows.Forms.RadioButton radioButtonPriorityLow;
         private System.Windows.Forms.TextBox textBoxMessages;
         private System.Windows.Forms.Button buttonShowMessages;
+        private System.Windows.Forms.Button buttonShowUsers;
         private System.Windows.Forms.TextBox textBoxMessageType;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label2;

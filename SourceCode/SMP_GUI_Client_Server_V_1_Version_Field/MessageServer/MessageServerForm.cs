@@ -121,5 +121,10 @@ namespace SMPServer
 
             reader.Close();
         }
+
+        private void buttonShowUsers_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

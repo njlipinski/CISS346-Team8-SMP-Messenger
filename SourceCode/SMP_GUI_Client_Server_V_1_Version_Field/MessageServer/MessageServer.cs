@@ -89,6 +89,12 @@ namespace SMPServer
 
                 if (messageType == Enumerations.SmpMessageType.PutMessage.ToString())
                 {
+                    if (!ProcessAuthenticateUser(userID, password))
+                    {
+                        SendSmpResponsePacket("AUTHENTICATION FAILED", networkStream);
+                        networkStreamReader.Close();
+                        return;
+                    }
                     string priority = networkStreamReader.ReadLine();
                     string dateTime = networkStreamReader.ReadLine();
                     string message = networkStreamReader.ReadLine();
@@ -109,6 +115,12 @@ namespace SMPServer
                 }
                 else if (messageType == Enumerations.SmpMessageType.GetMessage.ToString())
                 {
+                    if (!ProcessAuthenticateUser(userID, password))
+                    {
+                        SendSmpResponsePacket("AUTHENTICATION FAILED", networkStream);
+                        networkStreamReader.Close();
+                        return;
+                    }
                     string priority = networkStreamReader.ReadLine();
 
                     SmpPacket smpPacket = ProcessSmpGetPacket(priority);
@@ -193,11 +205,11 @@ namespace SMPServer
                 {
                     string dateTime = networkStreamReader.ReadLine();
                     SmpPacket smpPacket = new SmpPacket(version, userID, encryptedPassword, messageType, null, dateTime, null);
-                    string responsePacket = "User Registered: " + userID + DateTime.Now + Environment.NewLine;
+                    string responsePacket = "User Registered: " + userID + Environment.NewLine + DateTime.Now;
                     
                     if (ProcessSmpPutUser(smpPacket))
                     {
-                        responsePacket = "User Already Exists: " + userID + DateTime.Now + Environment.NewLine;
+                        responsePacket = "Error: " + userID + " Already Exists: " + Environment.NewLine + DateTime.Now;
                     }
 
                     SendSmpResponsePacket(responsePacket, networkStream);
@@ -353,7 +365,6 @@ namespace SMPServer
             }
             return userRecords + Environment.NewLine;
         }
-
         private static string ProcessSmpGetUsersandPasswords()
         {
             string userRecords = null;
@@ -379,7 +390,39 @@ namespace SMPServer
             }
             return userRecords + Environment.NewLine;
         }
-
+        private static bool ProcessAuthenticateUser(string userID, string password)
+        {
+            bool authenticated = false;
+            try
+            {
+                StreamReader reader = new StreamReader("Users.txt");
+                string privateKey = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "private.key");
+                string line = reader.ReadLine();
+                while(line != null)
+                {
+                    if(line == userID)
+                    {
+                        string encryptedPassword = reader.ReadLine();
+                        string decryptedPassword = CryptographyUtilities.Encryption.DecryptMessage(encryptedPassword, privateKey);
+                        if(decryptedPassword == password)
+                        {
+                            authenticated = true;
+                            break;
+                        }
+                    } else
+                    {
+                        reader.ReadLine(); // skip password line
+                    }
+                    reader.ReadLine(); // skip date line
+                    reader.ReadLine(); // skip empty line
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogExeption(ex);
+            }
+            return authenticated;
+        }
         private static void SendSmpResponsePacket(String responsePacket, NetworkStream dataStream)
         {
             StreamWriter writer = new StreamWriter(dataStream);
