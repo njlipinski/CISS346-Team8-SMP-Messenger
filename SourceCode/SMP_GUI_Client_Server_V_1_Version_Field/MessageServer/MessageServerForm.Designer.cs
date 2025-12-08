@@ -39,7 +39,12 @@ namespace SMPServer
             this.radioButtonPriorityLow = new System.Windows.Forms.RadioButton();
             this.textBoxMessages = new System.Windows.Forms.TextBox();
             this.buttonShowMessages = new System.Windows.Forms.Button();
+            this.registrationsForm = new System.Windows.Forms.Form();
             this.buttonShowUsers = new System.Windows.Forms.Button();
+            this.textBoxRegistrations = new System.Windows.Forms.TextBox();
+            this.radioButtonUserIDs = new System.Windows.Forms.RadioButton();
+            this.radioButtonUserIDsandPasswords = new System.Windows.Forms.RadioButton();
+            this.buttonShowRegistrations = new System.Windows.Forms.Button();
             this.textBoxMessageType = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -369,7 +374,6 @@ namespace SMPServer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-<<<<<<< HEAD
             this.ClientSize = new System.Drawing.Size(610, 666);
             this.Location = new System.Drawing.Point(15, 15);
             // start of 2.0 controls implementation
@@ -378,9 +382,6 @@ namespace SMPServer
             this.groupBox4.Controls.Add(this.labelLastPassword);
             this.groupBox4.Controls.Add(this.textBoxLastPassword);
             // end of 2.0 controls implementation
-=======
-            this.ClientSize = new System.Drawing.Size(542, 533);
->>>>>>> 108dab5673aafae846e84d60388d3f3da4a8071f
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
