@@ -128,38 +128,55 @@ namespace SMPServer
         }
         private void buttonShowRegistrations_Click(object sender, EventArgs e)
         {
+
             string userRecords = null;
-            if(radioButtonUserIDs.Checked)
+            if (!File.Exists("Users.txt"))
             {
-                StreamReader reader = new StreamReader("Users.txt");
-                string line = reader.ReadLine();
-                while(line != null)
-                {
-                    userRecords += line + Environment.NewLine;
-                    reader.ReadLine(); // skip password line
-                    reader.ReadLine(); // skip date line
-                    reader.ReadLine(); // skip empty line
-                    line = reader.ReadLine(); // read next user ID
-                }
-                reader.Close();
+                MessageBox.Show("No user data found",
+                                "File Not Found",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                textBoxRegistrations.Text = "No user data found";
+                return;
             }
-            else if(radioButtonUserIDsandPasswords.Checked)
+
+            try
             {
-                StreamReader reader = new StreamReader("Users.txt");
-                string privateKeyFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "private.key");
-                string line = reader.ReadLine();
-                while(line != null)
+                if (radioButtonUserIDs.Checked)
                 {
-                    userRecords += line + ", ";
-                    string password = CryptographyUtilities.Encryption.DecryptMessage(reader.ReadLine(), privateKeyFile);
-                    userRecords += password + Environment.NewLine;
-                    reader.ReadLine(); // skip date line
-                    reader.ReadLine(); // skip empty line
-                    line = reader.ReadLine(); // read next user ID
+                    StreamReader reader = new StreamReader("Users.txt");
+                    string line = reader.ReadLine();
+                    while (line != null)
+                    {
+                        userRecords += line + Environment.NewLine;
+                        reader.ReadLine(); // skip password line
+                        reader.ReadLine(); // skip date line
+                        reader.ReadLine(); // skip empty line
+                        line = reader.ReadLine(); // read next user ID
+                    }
+                    reader.Close();
                 }
-                reader.Close();
+                else if (radioButtonUserIDsandPasswords.Checked)
+                {
+                    StreamReader reader = new StreamReader("Users.txt");
+                    string privateKeyFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "private.key");
+                    string line = reader.ReadLine();
+                    while (line != null)
+                    {
+                        userRecords += line + ", ";
+                        string password = CryptographyUtilities.Encryption.DecryptMessage(reader.ReadLine(), privateKeyFile);
+                        userRecords += password + Environment.NewLine;
+                        reader.ReadLine(); // skip date line
+                        reader.ReadLine(); // skip empty line
+                        line = reader.ReadLine(); // read next user ID
+                    }
+                    reader.Close();
+                }
+                textBoxRegistrations.Text = userRecords;
             }
-            textBoxRegistrations.Text = userRecords;
+            catch (Exception ex) {
+                textBoxRegistrations.Text = "Error loading user records.";
+            }
         }
     }
 }
