@@ -1,6 +1,6 @@
-*.vsidx
-*.json
-*.dll
-*.pdb
-*.exe
-*.cache
+**/.vsidx
+**/.json
+**/.dll
+**/.pdb
+**/.exe
+**/.cache
