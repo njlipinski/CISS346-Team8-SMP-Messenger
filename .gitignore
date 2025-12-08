@@ -4,3 +4,11 @@
 *.pdb
 *.exe
 *.cache
+*.key
+*.txt
+*.user
+*.resources
+*.Up2Date
+*.db
+*.db-wal
+*.db-shm
