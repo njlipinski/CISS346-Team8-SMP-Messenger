@@ -124,7 +124,42 @@ namespace SMPServer
 
         private void buttonShowUsers_Click(object sender, EventArgs e)
         {
-            
+            registrationsForm.ShowDialog();
+        }
+        private void buttonShowRegistrations_Click(object sender, EventArgs e)
+        {
+            string userRecords = null;
+            if(radioButtonUserIDs.Checked)
+            {
+                StreamReader reader = new StreamReader("Users.txt");
+                string line = reader.ReadLine();
+                while(line != null)
+                {
+                    userRecords += line + Environment.NewLine;
+                    reader.ReadLine(); // skip password line
+                    reader.ReadLine(); // skip date line
+                    reader.ReadLine(); // skip empty line
+                    line = reader.ReadLine(); // read next user ID
+                }
+                reader.Close();
+            }
+            else if(radioButtonUserIDsandPasswords.Checked)
+            {
+                StreamReader reader = new StreamReader("Users.txt");
+                string privateKeyFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "private.key");
+                string line = reader.ReadLine();
+                while(line != null)
+                {
+                    userRecords += line + ", ";
+                    string password = CryptographyUtilities.Encryption.DecryptMessage(reader.ReadLine(), privateKeyFile);
+                    userRecords += password + Environment.NewLine;
+                    reader.ReadLine(); // skip date line
+                    reader.ReadLine(); // skip empty line
+                    line = reader.ReadLine(); // read next user ID
+                }
+                reader.Close();
+            }
+            textBoxRegistrations.Text = userRecords;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace SMPServer
+﻿using System.Media;
+
+namespace SMPServer
 {
     partial class FormSmpServer
     {
@@ -48,6 +50,12 @@
             this.label4 = new System.Windows.Forms.Label();
             this.textBoxMessagePriority = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.registrationsForm = new System.Windows.Forms.Form();
+            this.textBoxRegistrations = new System.Windows.Forms.TextBox();
+            this.radioButtonUserIDs = new System.Windows.Forms.RadioButton();
+            this.radioButtonUserIDsandPasswords = new System.Windows.Forms.RadioButton();
+            this.buttonShowRegistrations = new System.Windows.Forms.Button();
+            this.registrationsForm.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -150,6 +158,7 @@
             this.buttonShowMessages.Text = "Show Messages";
             this.buttonShowMessages.UseVisualStyleBackColor = true;
             this.buttonShowMessages.Click += new System.EventHandler(this.buttonShowMessages_Click);
+        // SMP 3.0 Implementation
             // 
             // buttonShowUsers
             // 
@@ -160,6 +169,46 @@
             this.buttonShowUsers.Text = "Show Users";
             this.buttonShowUsers.UseVisualStyleBackColor = true;
             this.buttonShowUsers.Click += new System.EventHandler(this.buttonShowUsers_Click);
+            // 
+            // textBoxRegistrations
+            // 
+            this.textBoxRegistrations.Location = new System.Drawing.Point(12, 12);
+            this.textBoxRegistrations.Multiline = true;
+            this.textBoxRegistrations.Name = "textBoxMessages";
+            this.textBoxRegistrations.Size = new System.Drawing.Size(320, 250);
+            this.textBoxRegistrations.TabIndex = 6;
+            // 
+            // radioButtonUserIDs
+            // 
+            this.radioButtonUserIDs.AutoSize = true;
+            this.radioButtonUserIDs.Checked = true;
+            this.radioButtonUserIDs.Location = new System.Drawing.Point(10, 285);
+            this.radioButtonUserIDs.Name = "radioButtonUserIDs";
+            this.radioButtonUserIDs.Size = new System.Drawing.Size(63, 24);
+            this.radioButtonUserIDs.TabIndex = 0;
+            this.radioButtonUserIDs.Text = "User IDs";
+            this.radioButtonUserIDs.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonUserIDsandPasswords
+            // 
+            this.radioButtonUserIDsandPasswords.AutoSize = true;
+            this.radioButtonUserIDsandPasswords.Location = new System.Drawing.Point(122, 285);
+            this.radioButtonUserIDsandPasswords.Name = "radioButtonUserIDsandPasswords";
+            this.radioButtonUserIDsandPasswords.Size = new System.Drawing.Size(63, 24);
+            this.radioButtonUserIDsandPasswords.TabIndex = 0;
+            this.radioButtonUserIDsandPasswords.Text = "User IDs and Passwords";
+            this.radioButtonUserIDsandPasswords.UseVisualStyleBackColor = true;
+            // 
+            // buttonShowRegistrations
+            // 
+            this.buttonShowRegistrations.Location = new System.Drawing.Point(12, 330);
+            this.buttonShowRegistrations.Name = "buttonShowRegistrations";
+            this.buttonShowRegistrations.Size = new System.Drawing.Size(320, 42);
+            this.buttonShowRegistrations.TabIndex = 3;
+            this.buttonShowRegistrations.Text = "Show Registrations";
+            this.buttonShowRegistrations.UseVisualStyleBackColor = true;
+            this.buttonShowRegistrations.Click += new System.EventHandler(this.buttonShowRegistrations_Click);
+        // End of SMP 3.0 Implementation
             // 
             // textBoxMessageType
             // 
@@ -304,6 +353,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(610, 666);
+            this.Location = new System.Drawing.Point(15, 15);
             // start of 2.0 controls implementation
             this.groupBox4.Controls.Add(this.labelLastUserID);
             this.groupBox4.Controls.Add(this.textBoxLastUserID);
@@ -327,6 +377,22 @@
             this.groupBox2.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ///
+            // FormSmpRegistrations
+            ///
+            this.registrationsForm.Controls.Add(this.textBoxRegistrations);
+            this.registrationsForm.Controls.Add(this.radioButtonUserIDs);
+            this.registrationsForm.Controls.Add(this.radioButtonUserIDsandPasswords);
+            this.registrationsForm.Controls.Add(this.buttonShowRegistrations);
+            this.registrationsForm.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.registrationsForm.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.registrationsForm.ClientSize = new System.Drawing.Size(350, 400);
+            this.registrationsForm.MaximizeBox = false;
+            this.registrationsForm.MinimizeBox = false;
+            this.registrationsForm.Name = "FormSmpRegistrations";
+            this.registrationsForm.ShowIcon = false;
+            this.registrationsForm.Text = "Registrations";
+            this.registrationsForm.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -341,7 +407,14 @@
         private System.Windows.Forms.RadioButton radioButtonPriorityLow;
         private System.Windows.Forms.TextBox textBoxMessages;
         private System.Windows.Forms.Button buttonShowMessages;
+        // SMP 3.0 Implementation
         private System.Windows.Forms.Button buttonShowUsers;
+        private System.Windows.Forms.Form registrationsForm;
+        private System.Windows.Forms.TextBox textBoxRegistrations;
+        private System.Windows.Forms.RadioButton radioButtonUserIDs;
+        private System.Windows.Forms.RadioButton radioButtonUserIDsandPasswords;
+        private System.Windows.Forms.Button buttonShowRegistrations;
+        // End of SMP 3.0 Implementation
         private System.Windows.Forms.TextBox textBoxMessageType;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label2;
