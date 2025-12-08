@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11222.15 d18.0
+VisualStudioVersion = 18.0.11222.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMP_Library", "SMP_Library\SMP_Library.csproj", "{CD0327A4-9533-4462-BA57-AAC3AFD75FA2}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encrypter", "..\01_RSA_Encryption\Encrypter\Encrypter.csproj", "{CC34FC68-40CC-43AC-B25C-E2C89F2FB6AF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyGenerator", "..\01_RSA_Encryption\KeyGenerator\KeyGenerator.csproj", "{D122BB7B-6803-4EA4-B11B-814E76263CB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientRegistration", "ClientRegistration\ClientRegistration.csproj", "{5C7F66B5-4653-4CD0-99C6-4AE9C4F8BDB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{D122BB7B-6803-4EA4-B11B-814E76263CB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D122BB7B-6803-4EA4-B11B-814E76263CB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D122BB7B-6803-4EA4-B11B-814E76263CB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C7F66B5-4653-4CD0-99C6-4AE9C4F8BDB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C7F66B5-4653-4CD0-99C6-4AE9C4F8BDB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C7F66B5-4653-4CD0-99C6-4AE9C4F8BDB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C7F66B5-4653-4CD0-99C6-4AE9C4F8BDB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
